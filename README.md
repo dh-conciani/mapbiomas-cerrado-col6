@@ -19,4 +19,18 @@ For detailed information about the classification and methodology, please read t
 
 4. [Install R base](https://cran.r-project.org/bin/) version 4.x and [Install R Studio Desktop.](https://www.rstudio.com/products/rstudio/download/)
 
-4. Download or clone this repository to your local workspace.
+5. Download or clone this repository to your local workspace.
+
+## Workflow
+Folders are organized by key-steps and contains a set of codes following the Cerrado biome classification schema:
+
+1. [Feature space selection](https://github.com/musx/mapbiomas-cerrado-col6/tree/main/1-feature-space)
+
+2. [General map classification](https://github.com/musx/mapbiomas-cerrado-col6/tree/main/2-general-map)
+
+3. [Wetlands classification](https://github.com/musx/mapbiomas-cerrado-col6/tree/main/3-wetlands)
+
+4. [Integration of maps and final adjustments](https://github.com/musx/mapbiomas-cerrado-col6/tree/main/4-integrate-map)
+
+## Contact
+For information request or issue/bug report, please write to dhemerson.costa@ipam.org.br
