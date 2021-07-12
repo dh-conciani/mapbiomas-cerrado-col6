@@ -1,7 +1,7 @@
 // teste de establização (amostras)
 
 // importar coleção do cerrado
-var col6 = ee.Image('projects/mapbiomas-workspace/COLECAO6/classificacao-test/CERRADO_col6_wetlands_gapfill_incid_temporal_spatial_freq_v56');
+var col6 = ee.Image('projects/mapbiomas-workspace/COLECAO6/classificacao-test/CERRADO_col6_wetlands_gapfill_incid_temporal_spatial_freq_v52');
 
 // definir anos para processar 
 var yearsList = [1985, 1986, 1987, 1988, 1989,
@@ -61,8 +61,8 @@ Map.addLayer(recipe.geometry());
 // exportar dados
   Export.image.toAsset({
     'image': recipe,
-    'description': 'CERRADO_col6_wetlands_gapfill_incid_temporal_spatial_freq_v57',
-    'assetId': 'projects/mapbiomas-workspace/COLECAO6/classificacao-test/CERRADO_col6_wetlands_gapfill_incid_temporal_spatial_freq_v57',
+    'description': 'CERRADO_col6_wetlands_gapfill_incid_temporal_spatial_freq_v53',
+    'assetId': 'projects/mapbiomas-workspace/COLECAO6/classificacao-test/CERRADO_col6_wetlands_gapfill_incid_temporal_spatial_freq_v53',
      'pyramidingPolicy': {
         '.default': 'mode'
     },
