@@ -8,4 +8,4 @@ Developed by [Instituto de Pesquisa Ambiental da Amazônia - IPAM](https://ipam.
 ## About
 This folder contains the scripts to classify and filter the ***Cerrado*** Biome.
 
-For detailed information about the classification and methodology, please read the  [Cerrado biome Appendix of the Algorithm Theoretical Basis Document (ATBD)](https://mapbiomas.org/download-dos-atbds)
+For detailed information about the classification and methodology, please read the  [Cerrado biome Appendix of the Algorithm Theoretical Basis Document (ATBD)](https://mapbiomas-br-site.s3.amazonaws.com/Cerrado_Appendix_-_ATBD_Collection_5_v1.pdf)
