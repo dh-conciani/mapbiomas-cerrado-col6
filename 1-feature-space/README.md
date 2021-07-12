@@ -1,6 +1,3 @@
-## Experiment schema:
-![alt text](https://github.com/musx/mapbiomas-cerrado-col6/blob/main/1-feature-space/www/feature%20space.png?raw=true)
-
 ### Table of contents
 * <b>Step 1</b>: Extract yearly spectral signatures and export as .csv
 * <b>Step 2</b>: Merge yearly .csv's and export as a unique .txt
@@ -92,4 +89,7 @@ Repeat <b>Step 2_trainModel.R</b> considering a set of different variables as de
 
 ## Step 5_plot_Accuracy.R <br> 
 Plot boxplots of predictors design accuracy `ggplot2::geom_boxplot` and compute `base::tukeyHSD` statistical test
+
+## Experiment schema:
+![alt text](https://github.com/musx/mapbiomas-cerrado-col6/blob/main/1-feature-space/www/feature%20space.png?raw=true)
 
