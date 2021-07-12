@@ -1,9 +1,4 @@
-//////////////////////////////////////////////////////////////////////
-//// Sorteio e coleta de amostras para o treinamento das classes  ////
-//// Mapbiomas Cerrado - Coleção 6                                ////
-//// Updates: Seleção de amostras estáveis baseadas na col. 5 +   ////                                                  
-//// Inclusão do Inventário Florestal de SP como referência       //// 
-//////////////////////////////////////////////////////////////////////
+// generate stable samples fro collection 5 for the Cerrado biome
 
 var CERRADO_simpl = 
     /* color: #d63000 */
@@ -91,65 +86,69 @@ var CERRADO_simpl =
           [-57.94604647334397, -22.477333261520297],
           [-56.01245272334397, -22.68021819177981]]]);
 
-// Ano para visualização 
+// set a year to plot a diagnosys classification from collection 5
 var year = 2000;
-var version_out = '2'; // string para identificar a versão 
+var version_out = '2'; // set a string to identify the output version
 
-// definir palheta de visualização 
+// import the color ramp module from mapbiomas 
 var palettes = require('users/mapbiomas/modules:Palettes.js');
 var vis = {
     'min': 0,
-    'max': 34,
-    'palette': palettes.get('classification2')
+    'max': 45,
+    'palette': palettes.get('classification5')
 };
 
-// defininir diretórios
-//// mosaicos SR (para coleção 6)
+// set assets
+//// landsat surface reflectance data - from collection 6
 var assetMosaics = 'projects/nexgenmap/MapBiomas2/LANDSAT/mosaics'; 
 
-//// biomas brasileiros (IBGE - 2019)
+//// brazilian biomes
 var biomes = ee.Image('projects/mapbiomas-workspace/AUXILIAR/biomas-2019-raster');
 
-//// asset de estados 
+//// brazilian administration states
 var assetStates = ee.Image('projects/mapbiomas-workspace/AUXILIAR/estados-2016-raster');
 
-//// diretório de exportação
-//// usuário deve escolher entre *workspace* ou *diretório pessoal*
-var dirout = 'projects/mapbiomas-workspace/AUXILIAR/CERRADO/'; // - workspace
+//// set directory for the output file
+var dirout = 'projects/mapbiomas-workspace/AUXILIAR/CERRADO/'; // - mapbiomas-workspace
 
-// carregar coleção 5
+// load collection 5
 var colecao5 = ee.Image('projects/mapbiomas-workspace/public/collection5/mapbiomas_collection50_integration_v1');
 
-// carregar dados para excluir amostras de VN nas estaveis que nao sao VN nestas bases de referência
-// PROBIO
+// load data to mask unstable samples
+// probio
 var probioNV = ee.Image('users/felipelenti/probio_cerrado_ras');
     probioNV = probioNV.eq(1);
-// PROBIO
+// prodes
 var prodesNV = ee.Image('users/felipelenti/prodes_cerrado_2000_2019');
     prodesNV = prodesNV.unmask(1).eq(1);
-// SEMA/SP
+// instituto florestal do estado de sp
 var SEMA_SP = ee.Image('projects/mapbiomas-workspace/VALIDACAO/MATA_ATLANTICA/SP_IF_2020_2');
 SEMA_SP = SEMA_SP.remap(
                   [3, 4, 5,  9,12,13,15,18,19,20,21,22,23,24,25,26,29,30,31,32,33],
                   [3, 4, 3, 21,12,12,15,19,19,19,19,25,25,25,25,33,25,25,25,25,33]);
-Map.addLayer(SEMA_SP, vis, 'SEMA_SP', false);
+//Map.addLayer(SEMA_SP, vis, 'SEMA_SP', false);
 var SEMA_bin = SEMA_SP.remap(
                   [3, 4, 5,  9,12,13,15,18,19,20,21,22,23,24,25,26,29,30,31,32,33],
                   [1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
                   var SEMA_bin = SEMA_bin.unmask(0).updateMask(assetStates.eq(35));
 
-
-
-// simplificar classses da coleção 5
+// remap collection 5 using legend that cerrado maps 
 var colList = ee.List([]);
 var col5remap = colecao5.select('classification_1985').remap(
                   [3, 4, 5,  9,12,13,15,18,19,20,21,22,23,24,25,26,29,30,31,32,33],
                   [3, 4, 3, 21,12,12,15,19,19,19,19,25,25,25,25,33,25,25,25,25,33]);
-// converter para integer8
+// convert to 8 bits
 colList = colList.add(col5remap.int8());
 
+// list years to be used in stability computation
+var anos = ['1985','1986','1987','1988','1989','1990',
+            '1991','1992','1993','1994','1995','1996',
+            '1997','1998','1999','2000','2001','2002',
+            '2003','2004','2005','2006','2007','2008',
+            '2009','2010','2011','2012','2013','2014',
+            '2015','2016','2017','2018', '2019'];
 
-var anos = ['1985','1986','1987','1988','1989','1990','1991','1992','1993','1994','1995','1996','1997','1998','1999','2000','2001','2002','2003','2004','2005','2006','2007','2008','2009','2010','2011','2012','2013','2014','2015','2016','2017','2018', '2019'];
+// remap collection 5 
 for (var i_ano=0;i_ano<anos.length; i_ano++){
   var ano = anos[i_ano];
 
@@ -159,7 +158,7 @@ for (var i_ano=0;i_ano<anos.length; i_ano++){
   colList = colList.add(col5flor.int8());
 }
 
-// define function
+// start function
 var collection = ee.ImageCollection(colList);
 
 var unique = function(arr) {
@@ -192,11 +191,8 @@ var getFrenquencyMask = function(collection, classId) {
 
     return frequencyMask.rename('frequency').set('class_id', classId);
 };
-///////////////////////////
-//FUNCTION: LOOP for each carta
 
 var lista_image = ee.List([]);
-//print(lista_image)
 
 var classFrequency = {"3": 35, "4": 35, "12": 35,"15": 35, "19": 35, "25": 35, "33": 35};
   
@@ -206,7 +202,7 @@ var frequencyMasks = Object.keys(classFrequency).map(function(classId) {
 
 frequencyMasks = ee.ImageCollection.fromImages(frequencyMasks);
 
-// mascarar amostras estáveis com base nos dados de referencia 
+// mask stable samples that are not stable on reference data
 var referenceMap = frequencyMasks.reduce(ee.Reducer.firstNonNull()).clip(CERRADO_simpl).aside(print);
 var referenceMapRef = referenceMap.where(probioNV.eq(0)
                                                  .and(referenceMap.eq(3)
@@ -221,15 +217,15 @@ var referenceMapRef = referenceMap.where(probioNV.eq(0)
     
     referenceMapRef = referenceMapRef.updateMask(referenceMapRef.neq(27)).rename("reference");
 
-// mascarar com base no inventario florestal sema/sp
-// apaga nativas que não foram nativas no inventario florestal
+// mask using inventario florestal do estado de sp
+// erase native vegetation samples that was not native vegetation on reference data
 var referenceMapRef2 = referenceMapRef.where(SEMA_bin.eq(0).and(referenceMapRef.eq(3)
                                                             .or(referenceMapRef.eq(4)
                                                             .or(referenceMapRef.eq(12)))),27);
 
  referenceMapRef2 = referenceMapRef2.updateMask(referenceMapRef2.neq(27)).rename("reference");
 
-// apaga antropicas que foram nativas no inventario florestal
+// erase anthropogenic classes from mapbiomas that was classified as natural on refeernce data
 var referenceMapRef3 = referenceMapRef2.where(SEMA_bin.eq(1).and(referenceMapRef2.eq(15)
                                                             .or(referenceMapRef2.eq(19)
                                                             .or(referenceMapRef2.eq(25)
@@ -238,17 +234,18 @@ var referenceMapRef3 = referenceMapRef2.where(SEMA_bin.eq(1).and(referenceMapRef
     referenceMapRef3 = referenceMapRef3.updateMask(referenceMapRef3.neq(27)).rename("reference");
 
 // Plotar mapa de convergências 
-Map.addLayer(referenceMapRef, vis, 'stable C5 + probio + prodes', false);
+//Map.addLayer(referenceMapRef, vis, 'stable C5 + probio + prodes', false);
 //Map.addLayer(referenceMapRef2, vis, 'stable C5 + previous + sema-sp', true);
-Map.addLayer(referenceMapRef3, vis, 'stable C5 + previous + sema-sp', false);
+//Map.addLayer(referenceMapRef3, vis, 'stable C5 + previous + sema-sp', false);
 //Map.addLayer(SEMA_bin, vis, 'bin sp', false);
 
-// insert grassland from reference into são paulo state
+// insert grassland from reference into são paulo state samples
 var referenceMapRef4 = referenceMapRef3.blend(SEMA_SP.updateMask(SEMA_SP.eq(12)));
 
+// plot correctred stable samples
 Map.addLayer(referenceMapRef4, vis, 'final');
 
-
+// explort to workspace asset
 Export.image.toAsset({
     "image": referenceMapRef4.toInt8(),
     "description": 'CE_amostras_estaveis85a19_col5_v'+version_out,
