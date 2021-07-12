@@ -9,17 +9,23 @@ var vis = {
     'min': 0,
     'max': 45,
     'palette': palettes.get('classification5')
-};
+    };
+    
+Map.addLayer(stableSamples, vis, 'stableSamples'); 
 ```
-
-## Step02_calcArea.js
-Compute area (*squared-kilometer*) for each class in each classification region. These calculations are used as input in next steps to balance training samples.
+[Link to script](https://code.earthengine.google.com/8f113e6c88c20fa7cf10025a61010354)
 
 ## Step02_calcArea.js
 Compute area (*squared-kilometer*) for each class in each classification region. These calculations are used as input in next steps to balance training samples.
 
 ## Step03_samplePoints.js
-Sort 344,800 sample points over stable pixels. Sample points were stratified by region  
+Sort 7,000 sample points over stable pixels distributed proportionally to each class area for each region (x38).
+```javascript
+// plot sample points
+var samplePoints = ee.FeatureCollection('projects/mapbiomas-workspace/AMOSTRAS/Cerrado/col6/samples/samples_col6_CERRADO_v1');
+Map.addLayer(samplePoints, {}, 'stableSamples');
+```
+[Link to script](https://code.earthengine.google.com/c14e10f0531238429014ab0fb21fcb7d)
 
 ## Classification schema:
 ![alt text](https://github.com/musx/mapbiomas-cerrado-col6/blob/main/2-general-map/www/Collection%206.png?raw=true)
