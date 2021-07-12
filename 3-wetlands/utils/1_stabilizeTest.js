@@ -1,4 +1,4 @@
-// correção de wetlands 
+// teste de establização (amostras)
 
 // importar coleção do cerrado
 var col6 = ee.Image('projects/mapbiomas-workspace/COLECAO6/classificacao-test/CERRADO_col6_wetlands_gapfill_incid_temporal_spatial_freq_v56');
