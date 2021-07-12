@@ -1,5 +1,5 @@
 ## Classification schema:
-![alt text](https://github.com/musx/mapbiomas-cerrado-featureSpace-c6/blob/main/www/feature%20space.png?raw=true)
+![alt text](https://github.com/musx/mapbiomas-cerrado-col6/blob/main/1-feature-space/www/feature%20space.png?raw=true)
 
 # Cerrado featureSpace - collection 6
 Developed by <i>Instituto de Pesquisa Ambiental da Amazônia (IPAM)</i> <br>
