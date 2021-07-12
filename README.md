@@ -1,5 +1,5 @@
 <div>
-    <img src='https://ipam.org.br/wp-content/uploads/2015/09/avatar-noticia.jpg' height='240' width='240' align='right'>
+    <img src='./2-general-map/www/ipam_logo.jpg' height='auto' width='auto' align='right'>
     <h1>Cerrado Biome</h1>
 </div>
 
