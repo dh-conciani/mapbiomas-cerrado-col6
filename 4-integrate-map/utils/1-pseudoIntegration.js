@@ -3,7 +3,7 @@
 
 // load mapbiomas assets
 var public_col5 = ee.Image('projects/mapbiomas-workspace/public/collection5/mapbiomas_collection50_integration_v1');
-var prelim_col6 = ee.Image('projects/mapbiomas-workspace/COLECAO6/classificacao-test/CERRADO_col6_final_v8');
+var prelim_col6 = ee.Image('projects/mapbiomas-workspace/COLECAO6/classificacao-test/CERRADO_col6_final_v10');
 //var cerrado_col6 = ee.Image('projects/mapbiomas-workspace/COLECAO6/classificacao-test/CERRADO_col6_gapfill_incid_temporal_spatial_freq_v6');
 
 // define export parameters
