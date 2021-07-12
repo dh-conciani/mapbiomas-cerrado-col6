@@ -1,44 +1,39 @@
-// Extrair assinaturas espectrais dos pontos LAPIG usando o novos mosaicos (SR)
-// Dhemerson Conciani - IPAM (dhemerson.costa@ipam.org.br)
+// extract spectral signatures from Landsat SR mosaics by using LAPIG reference points
+// Dhemerson E. Conciani - IPAM (dhemerson.costa@ipam.org.br)
 
-// definir parametros
-var biomeName = 'CERRADO';
-var year = 2019;
+// define inpuit parameters
+var biomeName = 'CERRADO';  // biome
+var year = 2019;            // year to extract signatures
 
-// definir caminhos
+// define assets 
 var assetMosaics = 'projects/nexgenmap/MapBiomas2/LANDSAT/mosaics';
-var assetScenes = 'projects/mapbiomas-workspace/AUXILIAR/landsat-mask';
 var assetBiomes = 'projects/mapbiomas-workspace/AUXILIAR/biomas-raster-41';
 
-// importar assets
-// biomas
+// import data
+// biomes
 var biomes = ee.Image(assetBiomes);
-// mosaicos
+var cerrado = ee.FeatureCollection('projects/mapbiomas-workspace/AUXILIAR/biomas-2019')
+              .filterMetadata("Bioma", "equals", "Cerrado");
+
+// Landsat SR mosaics
 var collectionMosaics = ee.ImageCollection(assetMosaics);
-// cenas
-var collectionScenes = ee.ImageCollection(assetScenes)
-    .filterMetadata('version', 'equals', '2');
-// filtrar mosaicos para o Cerrado
+
+// filter mosaics to Cerrado biome 
 var biomeCollection = collectionMosaics
     .filterMetadata('biome', 'equals', biomeName);
-// filtrar mosaicos para o ano
+
+// filter mosaics to the year
 biomeCollection = biomeCollection
     .filterMetadata('year', 'equals', year);
     
-// pontos de validação LAPIG
-// import Cerrado
-var cerrado = ee.FeatureCollection('projects/mapbiomas-workspace/AUXILIAR/biomas-2019')
-                            .filterMetadata("Bioma", "equals", "Cerrado");
-
-// import points
+// import validation points to Cerrado
 var points = ee.FeatureCollection('projects/mapbiomas-workspace/VALIDACAO/MAPBIOMAS_100K_POINTS_utf8')
             .filterBounds(cerrado);
 
-// criar imagem unica (juntar cartas)
+// reduce mosaic to a single image
 var medianImage = biomeCollection.median();
-print (medianImage);
 
-// Plotar imagem
+// plot image
 Map.addLayer(medianImage,
     {
         bands: ['swir1_median', 'nir_median', 'red_median'],
@@ -48,22 +43,19 @@ Map.addLayer(medianImage,
     biomeName + ' ' + String(year)
 );
 
-// extrair valores 
+// extract spectral values
 var featureCollectionMedian = medianImage
   .reduceRegions({
     collection:points,
     reducer:ee.Reducer.median(),
     scale:30,
-    // crs,
-    // crsTransform,
     tileScale:2
     });
 
-// exportar
+// export csv
  Export.table.toDrive({
    collection:featureCollectionMedian,
    description:'extract_points' + '_' + year,
    folder: 'TEMP',
-   //fileFormat: '',
+   fileFormat: 'CSV',
 });
-
