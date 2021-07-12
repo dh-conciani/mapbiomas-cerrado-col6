@@ -55,9 +55,22 @@ same-class pixels that also changed more than eight times, were replaced by the 
 ## Step08_postTemporal.js
 The temporal filter uses the subsequent years to replace pixels that have invalid transitions in a given year. It follows sequential steps:
 1. As a first step, the filter searches for any native vegetation class (Forest, Savanna, and Grassland) that was not classified as such in 1985, and was correctly classified in 1986 and 1987, and then corrects the 1985 value.
+
 2. In the second step, the filter searches for pixel values that were not Pasture, Agriculture, or Other Non Vegetated Areas (classes representing anthropogenic use) in 2020, but were classified as such in 2018 and 2019. The value in 2020 is then corrected to match the previous years to avoid any regeneration detection in the last year (which can not be corroborated).
+
 3. In the third step, the filter evaluates all pixels in a 3-year moving window to correct any value that changes in the second year (midpoint of the window) but returns to the same class in the third year. This process is applied observing prevalence rules, in this order: Pasture (15), Agriculture (19), Other non Vegetated Areas (25), River, Lake and Ocean (33), Savanna (4), Grassland (12), Forest (3).
+
 4. The last step is similar to the third process, but consists of a 4- and 5-year moving window that corrects all middle years running in the same order of class prevalence.
+
+## Step09_postSpatial.js
+The spatial filter avoids misclassifications at the edge of pixel groups, and was built based on the `connectedPixelCount` function. Native to the GEE platform, this function
+locates connected components (neighbours) that share the same pixel value. Thus, only pixels that do not share connections to a predefined number of identical neighbours are
+considered isolated. At least six connected pixels are required to reach the minimum connection value. Consequently, the minimum mapping unit is directly affected by the
+spatial filter applied, and it was defined as six pixels (~0,5 ha).
+
+## Step10_postFrequency.js
+The frequency filter was applied only on pixels that were classified as native vegetation (no conversion transitions) throughout the time series. If such a pixel was
+classified as the same class over more than 50% of the period for savana and grassland or 75% for forest , that class was assigned to that pixel over the whole period. The results of this frequency filter was a more stable classification of native vegetation classes. Another important result was the removal of noise in the first and last year of the classification, which can not be adequately assessed by the temporal filter.
 
 ## Classification schema:
 ![alt text](https://github.com/musx/mapbiomas-cerrado-col6/blob/main/2-general-map/www/Collection%206.png?raw=true)
