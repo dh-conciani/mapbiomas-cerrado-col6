@@ -30,7 +30,7 @@ Folders are organized by key-steps and contains a set of codes following the Cer
 
 3. [Wetlands classification](https://github.com/musx/mapbiomas-cerrado-col6/tree/main/3-wetlands)
 
-4. [Integration of maps and final adjustments](https://github.com/musx/mapbiomas-cerrado-col6/tree/main/4-integrate-map)
+4. [Integration of maps](https://github.com/musx/mapbiomas-cerrado-col6/tree/main/4-integrate-map)
 
 ## Contact
 For information request or issue/bug report, please write to dhemerson.costa@ipam.org.br
