@@ -1,10 +1,6 @@
 ## Classification schema:
 ![alt text](https://github.com/musx/mapbiomas-cerrado-col6/blob/main/1-feature-space/www/feature%20space.png?raw=true)
 
-# Cerrado featureSpace - collection 6
-Developed by <i>Instituto de Pesquisa Ambiental da Amazônia (IPAM)</i> <br>
-Dhemerson Conciani, Ane Alencar, Julia Shimbo, Felipe Lenti, Bárbara Zimbres, Joaquim Pereira, Vera Arruda, Wallace Silva and Felipe Martenexen. <br>
-
 ### Table of contents
 * <b>Step 1</b>: Extract yearly spectral signatures and export as .csv
 * <b>Step 2</b>: Merge yearly .csv's and export as a unique .txt
