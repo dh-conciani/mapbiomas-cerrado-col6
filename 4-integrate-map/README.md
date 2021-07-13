@@ -33,4 +33,22 @@ Map.addLayer(cerrado.select(['classification_2020']), vis, 'cerrado');
 [Link to script](https://code.earthengine.google.com/19709467a524c44c9c899d1994074508)
 
 ## 3-create-mosaic-class.js
-dissolve pasture (15) and agriculture (19) to the mosaic of agriculture and pasture (21)
+Convert pasture (15) and agriculture (19) to mosaic of agriculture and pasture (21)
+```javascript
+// plot result
+var cerrado = ee.Image('projects/mapbiomas-workspace/COLECAO6/classificacao-test/CERRADO_col6_final_v10');
+
+var palettes = require('users/mapbiomas/modules:Palettes.js');
+var vis = {
+    'min': 0,
+    'max': 45,
+    'palette': palettes.get('classification5')
+    };
+    
+Map.addLayer(cerrado.select(['classification_2020']), vis, 'cerrado'); 
+```
+[Link to script](https://code.earthengine.google.com/e9f54c277d9f5b4448fe149a83f436b8)
+
+## 4-send-to-workspace.js
+Slice bands into single images, insert production metadata and send to Mapbiomas workspace.
+Collection 6 done :-)
