@@ -50,5 +50,5 @@ Map.addLayer(cerrado.select(['classification_2020']), vis, 'cerrado');
 [Link to script](https://code.earthengine.google.com/e9f54c277d9f5b4448fe149a83f436b8)
 
 ## 4-send-to-workspace.js
-Slice bands into single images, insert production metadata and send to Mapbiomas workspace.
+Slice bands into single images, insert production metadata and send to Mapbiomas workspace. <br>
 Collection 6 done :-)
