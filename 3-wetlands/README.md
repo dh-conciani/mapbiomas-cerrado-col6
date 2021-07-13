@@ -108,9 +108,25 @@ The spatial filter avoids misclassifications at the edge of pixel groups, and wa
 ## 13_postFreq.js
 The frequency filter was applied only on pixels that were classified as native vegetation (no conversion transitions) throughout the time series. If such a pixel was classified as the same class over more than 50% of the period for wetland, that class was assigned to that pixel over the whole period. The results of this frequency filter was a more stable classification of native vegetation classes. Another important result was the removal of noise in the first and last year of the classification, which can not be adequately assessed by the temporal filter.
 
+## 14_generate_trainingMask_ciclo2.js
+Compute wetlands stable pixels over all the time-series (1985-2020) from generated product and create a new training mask for the second phase of the classifier.
+```javascript
+// plot trainingMask
+var trainingMask = ee.Image('projects/mapbiomas-workspace/AUXILIAR/CERRADO/c6-wetlands/input_masks/trainingMask_wetlands_c6_ciclo2_v53');
 
+var palettes = require('users/mapbiomas/modules:Palettes.js');
+var vis = {
+    'min': 0,
+    'max': 45,
+    'palette': palettes.get('classification5')
+    };
+    
+Map.addLayer(trainingMask, vis, 'trainingMask');
+```
+[Link to script](https://code.earthengine.google.com/71173d56749eb16492401906be2907c3)
 
-
+## Next steps
+From step *15_computeArea_byRegion_ciclo2.js* to step *24_postFreq.js*, we repeat the same processes that have previously explained- however, using the training mask from phase 2. 
 
 ## Classification schema:
 ![alt text](https://github.com/musx/mapbiomas-cerrado-col6/blob/main/3-wetlands/www/wetlands%20-%20c6%20-%20color.png?raw=true)
