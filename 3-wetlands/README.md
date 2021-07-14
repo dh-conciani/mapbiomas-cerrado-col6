@@ -73,7 +73,7 @@ Extract spectral signatures for each year from Landsat mosaics and build trainin
 var trainingPoints = ee.FeatureCollection('projects/mapbiomas-workspace/AMOSTRAS/Cerrado/col6/wetlands/training_v53_c2/train_col_6_CERRADO_wetland_reg16_ano_2020');
 Map.addLayer(trainingPoints, {}, 'trainingSamples');
 ```
-[Link to script](https://code.earthengine.google.com/b6c91d13e5ca2748965b4818ad4b9d24)
+[Link to script](https://code.earthengine.google.com/9eccb00382e0a0a4d91763ae1fe876ca)
 
 ## 08_RFclasification.py 
 Perform the classification of the Cerrado Landsat SR mosaics by using the `ee.Classifier.smileRandomForest()` added with auxiliary mosaics and training samples.
