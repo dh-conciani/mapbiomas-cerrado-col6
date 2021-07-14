@@ -70,7 +70,7 @@ Map.addLayer(samplePoints, {}, 'samplePoints');
 Extract spectral signatures for each year from Landsat mosaics and build training dataset.
 ```javascript
 // plot a sample of training dataset (one region and one year)
-var trainingPoints = ee.FeatureCollection('projects/mapbiomas-workspace/AMOSTRAS/Cerrado/col6/wetlands/training_v1/train_col_6_CERRADO_wetland_reg16_ano_2020');
+var trainingPoints = ee.FeatureCollection('projects/mapbiomas-workspace/AMOSTRAS/Cerrado/col6/wetlands/training_v53_c2/train_col_6_CERRADO_wetland_reg16_ano_2020');
 Map.addLayer(trainingPoints, {}, 'trainingSamples');
 ```
 [Link to script](https://code.earthengine.google.com/b6c91d13e5ca2748965b4818ad4b9d24)
