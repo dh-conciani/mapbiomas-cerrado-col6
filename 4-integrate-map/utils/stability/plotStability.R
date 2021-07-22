@@ -71,6 +71,68 @@ compPercent <- function (obj) {
   return(recipe)
 }
 
+## function to compute 
+totalStability <- function(obj) {
+  ## compute stable vs. unstable per class and per collection
+  cols <- unique(obj$col)
+  clasz <- unique(obj$ref)
+
+  ## create an empty recipe
+  recipe <- as.data.frame(NULL)
+  
+  ## for each collection
+  for (i in 1:length(cols)) {
+    ## define the number of frequency that responds by total stability
+    if (cols[i] == '3_1') {
+      maxFreq = '33'
+    }
+    if (cols[i] == '4_1') {
+      maxFreq = '34'
+    }
+    if (cols[i] == '5_0') {
+      maxFreq = '35'
+    }
+    if (cols[i] == '6_0') {
+      maxFreq = '36'
+    }
+
+    ## for each reference class
+    for (j in 1:length(clasz)) {
+      ## parse full stability 
+      stable <- cbind(cols[i], clasz[j], 'Stable', subset(obj, col == cols[i] & ref == clasz[j] & freq == maxFreq)$Percent)
+      ## parse unstability (100 - stability)
+      unstable <- cbind(cols[i], clasz[j], 'Unstable', 100 - subset(obj, col == cols[i] & ref == clasz[j] & freq == maxFreq)$Percent)
+      ## bind
+      tab_ij <- as.data.frame(rbind(stable, unstable))
+      ## create an empty column in collections in which wetlands does not exists
+      if (ncol(tab_ij) != 4) {
+        tab_ij$Percent <- 0
+      }
+      ## standardize
+      colnames(tab_ij)[1] <- "Collection"
+      colnames(tab_ij)[2] <- "Class"
+      colnames(tab_ij)[3] <- "Condition"
+      colnames(tab_ij)[4] <- "Percent"
+      ## store into recipe
+      recipe <- rbind(recipe, tab_ij)
+    }
+  }
+  
+  ## rename collections
+  recipe$Collection <- gsub("3_1", "3.1",
+                            gsub("4_1", "4.1",
+                                 gsub("5_0", "5.0",
+                                      gsub("6_0", "6.0", 
+                                           recipe$Collection))))
+  
+  ## reorder collections
+  recipe$Collection <- factor(recipe$Collection, levels=c("6.0", "5.0", "4.1", "3.1"))
+  recipe$Condition <- factor(recipe$Condition, levels=c("Unstable", "Stable"))
+  
+  
+  return (recipe)
+}
+
 ## read table
 data <- readStability(file = '../tables/stability/freq_cols.csv')
 
@@ -80,7 +142,10 @@ data$ref <- int_to_str(reclass= data$ref)
 ## Compute percentages
 data <- compPercent(obj= data)
 
-## plot
+## Compute total stability by collection
+total <- totalStability(obj = data)
+
+## plot stability 
 ggplot (data, aes (x=as.numeric(freq), y= as.numeric(Percent), colour= col, linetype=col)) +
   geom_line(size=1) +
   scale_y_log10() + 
@@ -89,3 +154,15 @@ ggplot (data, aes (x=as.numeric(freq), y= as.numeric(Percent), colour= col, line
   facet_wrap(~ref, scales= 'free_y') +
   theme_bw() +
   xlab('Frequency') + ylab('Percent')
+
+## plot total stability
+ggplot (total, aes(x= as.factor(Collection), y= as.numeric(Percent), fill= Condition)) +
+  geom_bar(stat="identity", alpha= 0.7) +
+  #geom_text(aes(label=paste0(round(as.numeric(Percent), digits=1), "%")), vjust=0) +
+  geom_text(aes(label=paste0(round(as.numeric(Percent), digits= 1), "%")),
+            position=position_dodge(width=0), hjust= 3, size= 5, color='black') +
+  scale_fill_manual(values=c('lightsalmon1', 'deepskyblue3')) +
+  facet_wrap(~Class) + 
+  theme_minimal() +
+  coord_flip() +
+  xlab('Collection') + ylab('Percent')
